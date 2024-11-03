@@ -1,5 +1,5 @@
 
-use ring::{signature::Ed25519KeyPair, rand::SystemRandom};
+use ring::{signature::{Ed25519KeyPair, KeyPair}, rand::SystemRandom};
 use thiserror::Error;
 
 use shared::{HolderChallengeRequest, HolderVerifyRequest, VerifierChallengeResponse, HolderRegisterRequest, VerifierRegisterResponse, UserId};
@@ -13,7 +13,6 @@ pub struct Holder {
 
 impl Holder {
 
-    // TODO: Should generate keys here
     pub fn new() -> Self {
 
         let rng = SystemRandom::new();
@@ -31,24 +30,39 @@ impl Holder {
     // User Registration
 
     pub fn create_register_request(&mut self) -> HolderRegisterRequest {
-        todo!()
+        let public_key_bytes = self.key_pair.public_key().as_ref().to_vec();
+        HolderRegisterRequest::new(public_key_bytes)
     }
 
     pub fn recv_register_response(&mut self, response: VerifierRegisterResponse) -> Result<(), HolderError> {
-        todo!()
+        let user_id = response.user_id();
+        self.user_id = Some(user_id);
+        Ok(())
     }
 
     // Challenge / Verification
 
     pub fn create_challenge_request(&self) -> Result<HolderChallengeRequest, HolderError> {
-        let Some(user_id) = self.user_id else {
-            return Err(HolderError::RegistrationIncomplete);
-        };
-        todo!()
+        if let Some(user_id) = self.user_id {
+            Ok(HolderChallengeRequest::new(user_id))
+        } else {
+            Err(HolderError::RegistrationIncomplete)
+        }
     }
 
     pub fn recv_challenge_response(&mut self, response: VerifierChallengeResponse) -> Result<HolderVerifyRequest, HolderError> {
-        todo!()
+        let nonce_bytes = response.nonce_bytes();
+
+        // Ensure the Holder has a UserId
+        let user_id = self
+            .user_id
+            .ok_or(HolderError::RegistrationIncomplete)?;
+
+        // Sign the nonce using the Holder's private key
+        let signature = self.key_pair.sign(nonce_bytes);
+        let signature_bytes = signature.as_ref().to_vec();
+
+        Ok(HolderVerifyRequest::new(user_id, signature_bytes))
     }
 }
 
