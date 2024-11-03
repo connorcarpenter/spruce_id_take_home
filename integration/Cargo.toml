@@ -7,3 +7,5 @@ workspace = ".."
 [dependencies]
 holder = { path = "../holder" }
 verifier = { path = "../verifier" }
+
+anyhow = { version = "1.0" }

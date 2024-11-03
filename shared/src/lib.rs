@@ -1,3 +1,32 @@
+#[derive(Copy, Clone, Eq, PartialEq)]
+pub struct UserId;
+
+impl UserId {
+    pub fn new() -> Self {
+        Self
+    }
+}
+
+// HolderRegisterRequest
+
+pub struct HolderRegisterRequest;
+
+impl HolderRegisterRequest {
+    pub fn new() -> Self {
+        Self
+    }
+}
+
+// VerifierRegisterResponse
+
+pub struct VerifierRegisterResponse;
+
+impl VerifierRegisterResponse {
+    pub fn new() -> Self {
+        Self
+    }
+}
+
 // HolderChallengeRequest
 
 pub struct HolderChallengeRequest;
@@ -36,14 +65,4 @@ impl VerifierVerifyResponse {
     pub fn new() -> Self {
         Self
     }
-}
-
-// HolderError
-pub enum HolderError {
-    Placeholder,
-}
-
-// VerifierError
-pub enum VerifierError {
-    Placeholder,
 }
