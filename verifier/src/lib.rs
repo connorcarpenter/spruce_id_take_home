@@ -1,4 +1,4 @@
-use shared::{HolderRequest, HolderRequest2, VerifierError, VerifierResponse, VerifierResponse2};
+use shared::{HolderChallengeRequest, HolderVerifyRequest, VerifierError, VerifierChallengeResponse, VerifierVerifyResponse};
 
 pub struct Verifier;
 
@@ -7,11 +7,11 @@ impl Verifier {
         Self
     }
 
-    pub fn recv_request(&mut self, request: HolderRequest) -> Result<VerifierResponse, VerifierError> {
+    pub fn recv_challenge_request(&mut self, request: HolderChallengeRequest) -> Result<VerifierChallengeResponse, VerifierError> {
         todo!()
     }
 
-    pub fn recv_request_2(&mut self, p0: HolderRequest2) -> Result<VerifierResponse2, VerifierError> {
+    pub fn recv_verify_request(&mut self, request: HolderVerifyRequest) -> Result<VerifierVerifyResponse, VerifierError> {
         todo!()
     }
 }

@@ -10,20 +10,20 @@ fn primary() {
     let mut holder = Holder::new();
 
     // Holder (which is the web application?) sends request to Verifier
-    let holder_request = holder.request_create();
+    let holder_challenge_request = holder.create_challenge_request();
 
     // Verifier (which is the backend service?) receives request from Holder
-    let Ok(verifier_response) = verifier.recv_request(holder_request) else {
+    let Ok(verifier_challenge_response) = verifier.recv_challenge_request(holder_challenge_request) else {
         todo!();
     };
 
     // Holder receives response from Verifier
-    let Ok(holder_request_2) = holder.recv_response(verifier_response) else {
+    let Ok(holder_verify_request) = holder.recv_challenge_response(verifier_challenge_response) else {
         todo!();
     };
 
     // Verifier receives response from Holder
-    let Ok(_verifier_response_2) = verifier.recv_request_2(holder_request_2) else {
+    let Ok(verifier_verify_response) = verifier.recv_verify_request(holder_verify_request) else {
         panic!("Holder has failed to prove ownership of private key");
     };
 

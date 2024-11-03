@@ -1,4 +1,4 @@
-use shared::{HolderError, HolderRequest, HolderRequest2, VerifierResponse};
+use shared::{HolderError, HolderChallengeRequest, HolderVerifyRequest, VerifierChallengeResponse};
 
 pub struct Holder;
 
@@ -11,11 +11,11 @@ impl Holder {
         Self
     }
 
-    pub fn request_create(&self) -> HolderRequest {
+    pub fn create_challenge_request(&self) -> HolderChallengeRequest {
         todo!()
     }
 
-    pub fn recv_response(&mut self, verifier_response: VerifierResponse) -> Result<HolderRequest2, HolderError> {
+    pub fn recv_challenge_response(&mut self, response: VerifierChallengeResponse) -> Result<HolderVerifyRequest, HolderError> {
         todo!()
     }
 }

@@ -1,38 +1,38 @@
-// HolderRequest
+// HolderChallengeRequest
 
-pub struct HolderRequest;
+pub struct HolderChallengeRequest;
 
-impl HolderRequest {
+impl HolderChallengeRequest {
     pub fn new() -> Self {
         Self
     }
 }
 
-// VerifierResponse
+// VerifierChallengeResponse
 
-pub struct VerifierResponse;
+pub struct VerifierChallengeResponse;
 
-impl VerifierResponse {
+impl VerifierChallengeResponse {
     pub fn new() -> Self {
         Self
     }
 }
 
-// HolderRequest2
+// HolderVerifyRequest
 
-pub struct HolderRequest2;
+pub struct HolderVerifyRequest;
 
-impl HolderRequest2 {
+impl HolderVerifyRequest {
     pub fn new() -> Self {
         Self
     }
 }
 
-// VerifierResponse
+// VerifierVerifyResponse
 
-pub struct VerifierResponse2;
+pub struct VerifierVerifyResponse;
 
-impl VerifierResponse2 {
+impl VerifierVerifyResponse {
     pub fn new() -> Self {
         Self
     }
