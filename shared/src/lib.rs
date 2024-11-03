@@ -1,9 +1,15 @@
-#[derive(Copy, Clone, Eq, PartialEq)]
-pub struct UserId;
+use uuid::Uuid;
+
+#[derive(Copy, Clone, Eq, PartialEq, Hash, Ord, PartialOrd)]
+pub struct UserId {
+    uuid: Uuid,
+}
 
 impl UserId {
     pub fn new() -> Self {
-        Self
+        Self {
+            uuid: Uuid::new_v4(),
+        }
     }
 }
 

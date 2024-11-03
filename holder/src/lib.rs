@@ -1,3 +1,5 @@
+
+use ring::{signature::Ed25519KeyPair, rand::SystemRandom};
 use thiserror::Error;
 
 use shared::{HolderChallengeRequest, HolderVerifyRequest, VerifierChallengeResponse, HolderRegisterRequest, VerifierRegisterResponse, UserId};
@@ -6,14 +8,23 @@ use shared::{HolderChallengeRequest, HolderVerifyRequest, VerifierChallengeRespo
 
 pub struct Holder {
     user_id: Option<UserId>,
+    key_pair: Ed25519KeyPair,
 }
 
 impl Holder {
 
     // TODO: Should generate keys here
     pub fn new() -> Self {
+
+        let rng = SystemRandom::new();
+        let pkcs8_bytes =
+            Ed25519KeyPair::generate_pkcs8(&rng).expect("Failed to generate key pair");
+        let key_pair =
+            Ed25519KeyPair::from_pkcs8(pkcs8_bytes.as_ref()).expect("Failed to parse key pair");
+
         Self {
             user_id: None,
+            key_pair
         }
     }
 

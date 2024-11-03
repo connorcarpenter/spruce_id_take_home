@@ -7,4 +7,5 @@ workspace = ".."
 [dependencies]
 shared = { path = "../shared" }
 
+ring = { version = "0.17" }
 thiserror = { version = "1.0" }
