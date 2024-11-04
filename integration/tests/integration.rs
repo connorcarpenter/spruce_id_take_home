@@ -6,7 +6,7 @@ use holder::Holder;
 
 #[test]
 fn primary() {
-    // Verifier
+    // Verifier (which is some backend service)
     let mut verifier = Verifier::new();
 
     // Holder (which is the web application)
