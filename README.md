@@ -18,4 +18,9 @@ The goal of this assignment is to implement a mechanism to prove ownership of a 
 
 This assignment should not take more than 4 hours. At the end you should send a link to a repo or a tarball of it, with a README with some instructions on how to run the demo.
 
+### How to Run:
+- Clone this repository
+- Navigate into the repository directory
+- Run ```cargo test --package tests```
+- TODO: more logging while testing to better track what is happening
 
