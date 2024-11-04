@@ -1,5 +1,24 @@
 # Changelog
 
+### 11/3/2024 4:56 PM MST
+- Pulling in ring and uuid crates, stubbing out data
+- Defined necessary data in Requests/Responses
+- Implemented methods in Verifier and Holder
+- Happy path test works end to end!
+- Done for today, will add docs and more tests and logging tomorrow/soon!
+
+### 11/3/2024 4:07 PM MST
+- Added Registration step to Holder/Verifier communication, UserId abstracts away the public key, preferably there would be additional auth steps that happen here!
+- Naming things is hard :) Renamed various structs, errors, and methods to make example more readable
+- Pulled in `thiserror` and `anyhow` crates to reduce boilerplate
+- Test bubbles up errors from process execution, handles them, reducing boilerplate
+
+### 11/3/2024 3:05 PM MST
+- Stubbed out verifier & holder crates, types, define API
+- Stubbed out shared types into separate crate
+- Created running integration test that calls the appropriate methods to simulate the request/response flow of the Holder and Verifier
+- Added rustfmt config
+
 ### 11/3/2024 2:21 PM MST
 - Setting up new repository for local development
 - Adding changelog to allow SpruceId to follow along with my thought process
