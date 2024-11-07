@@ -25,5 +25,4 @@ This assignment should not take more than 4 hours. At the end you should send a 
   ```
   cargo run integration_test
   ```
-- TODO: more logging while testing to better track what is happening
 
