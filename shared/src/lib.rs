@@ -1,6 +1,7 @@
+use base64::Engine;
 use uuid::Uuid;
 
-#[derive(Copy, Clone, Eq, PartialEq, Hash, Ord, PartialOrd)]
+#[derive(Copy, Clone, Eq, PartialEq, Hash, Ord, PartialOrd, Debug)]
 pub struct UserId {
     uuid: Uuid,
 }
@@ -132,3 +133,20 @@ impl VerifierVerifyResponse {
 pub type Nonce = [u8; 32];
 pub type PublicKey = [u8; 32];
 pub type Signature = [u8; 64];
+
+// ToBase64 Trait
+pub trait ToBase64 {
+    fn to_base64(&self) -> String;
+}
+
+impl ToBase64 for Nonce {
+    fn to_base64(&self) -> String {
+        base64::engine::general_purpose::STANDARD.encode(self)
+    }
+}
+
+impl ToBase64 for Signature {
+    fn to_base64(&self) -> String {
+        base64::engine::general_purpose::STANDARD.encode(self)
+    }
+}

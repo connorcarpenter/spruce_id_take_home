@@ -23,7 +23,7 @@ This assignment should not take more than 4 hours. At the end you should send a 
 - Navigate into the repository directory
 - Run the following command:
   ```
-  cargo test --package tests
+  cargo run integration_test
   ```
 - TODO: more logging while testing to better track what is happening
 

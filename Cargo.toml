@@ -1,11 +1,8 @@
 [workspace]
 resolver = "2"
-# all crates should be listed here
 members = [
     "holder",
     "shared",
     "verifier",
     "integration",
 ]
-# any crates with conflicting dependencies / feature flags cannot be put here
-default-members = []

@@ -6,4 +6,4 @@ workspace = ".."
 
 [dependencies]
 uuid = { version = "1.0", features = ["v4"] }
-
+base64 = { version = "0.22" }

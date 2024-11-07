@@ -1,5 +1,12 @@
 # Changelog
 
+### 11/7/2024 9:37 PM MST
+- Turned integration test into a runnable binary, mostly to facilitate logging
+- Added detailed logging to the integration test
+
+### 11/6/2024 8:25 PM MST
+- Constraining Nonce, PublicKey, and Signature to fixed-length byte arrays
+
 ### 11/3/2024 4:56 PM MST
 - Pulling in ring and uuid crates, stubbing out data
 - Defined necessary data in Requests/Responses
