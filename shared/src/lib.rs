@@ -51,7 +51,7 @@ impl VerifierRegisterResponse {
 }
 
 // HolderChallengeRequest
-
+#[derive(Copy, Clone)]
 pub struct HolderChallengeRequest {
     user_id: UserId,
 }
@@ -90,19 +90,25 @@ impl VerifierChallengeResponse {
 
 pub struct HolderVerifyRequest {
     user_id: UserId,
+    nonce: Nonce,
     signature: Signature,
 }
 
 impl HolderVerifyRequest {
-    pub fn new(user_id: UserId, signature: Signature) -> Self {
+    pub fn new(user_id: UserId, nonce: Nonce, signature: Signature) -> Self {
         Self {
             user_id,
+            nonce,
             signature,
         }
     }
 
     pub fn user_id(&self) -> UserId {
         self.user_id
+    }
+
+    pub fn nonce(&self) -> Nonce {
+        self.nonce
     }
 
     pub fn signature(&self) -> &Signature {

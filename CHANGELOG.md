@@ -1,6 +1,11 @@
 # Changelog
 
-### 11/7/2024 9:37 PM MST
+### 11/6/2024 10:45 PM MST
+- Added expiration time to Verifier's stored nonce
+- Verifier stores multiple nonces per user, one per challenge request
+- Added integration test to ensure multiple active nonces per user work as expected
+
+### 11/6/2024 9:37 PM MST
 - Turned integration test into a runnable binary, mostly to facilitate logging
 - Added detailed logging to the integration test
 

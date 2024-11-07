@@ -10,3 +10,4 @@ shared = { path = "../shared" }
 ring = { version = "0.17" }
 thiserror = { version = "1.0" }
 log = { version = "0.4" }
+chrono = { version = "0.4" }
