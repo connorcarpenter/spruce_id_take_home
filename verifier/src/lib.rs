@@ -3,7 +3,7 @@ use std::collections::HashMap;
 use ring::{rand::{SecureRandom, SystemRandom}, signature::{UnparsedPublicKey, ED25519}, };
 use thiserror::Error;
 
-use shared::{HolderChallengeRequest, HolderVerifyRequest, VerifierChallengeResponse, VerifierVerifyResponse, HolderRegisterRequest, VerifierRegisterResponse, UserId};
+use shared::{HolderChallengeRequest, HolderVerifyRequest, VerifierChallengeResponse, VerifierVerifyResponse, HolderRegisterRequest, VerifierRegisterResponse, UserId, Nonce, PublicKey};
 
 // Verifier
 
@@ -21,10 +21,10 @@ impl Verifier {
     }
 
     pub fn recv_register_request(&mut self, request: HolderRegisterRequest) -> Result<VerifierRegisterResponse, VerifierError> {
-        let public_key_bytes = request.public_key_bytes();
+        let public_key = request.public_key().clone();
 
         let new_user_id = UserId::new_random();
-        let new_user = User::new(public_key_bytes.to_vec());
+        let new_user = User::new(public_key);
         self.users.insert(new_user_id, new_user);
 
         Ok(VerifierRegisterResponse::new(new_user_id))
@@ -37,7 +37,7 @@ impl Verifier {
         if let Some(user) = self.users.get_mut(&user_id) {
 
             // Generate a secure random nonce
-            let mut nonce = vec![0u8; 16];
+            let mut nonce = [0u8; 32];
             self.rng
                 .fill(&mut nonce)
                 .map_err(|_| VerifierError::NonceGenerationFailed)?;
@@ -54,7 +54,7 @@ impl Verifier {
 
     pub fn recv_verify_request(&mut self, request: HolderVerifyRequest) -> Result<VerifierVerifyResponse, VerifierError> {
         let user_id = request.user_id();
-        let signature_bytes = request.signature_bytes();
+        let signature = request.signature();
 
         // Retrieve the User associated with the UserId
         let user = self
@@ -63,18 +63,18 @@ impl Verifier {
             .ok_or(VerifierError::UserNotFound)?;
 
         // Get the Public Key
-        let public_key_bytes = user.public_key();
+        let public_key = user.public_key();
         let public_key =
-            UnparsedPublicKey::new(&ED25519, public_key_bytes);
+            UnparsedPublicKey::new(&ED25519, public_key);
 
         // Get the Nonce
-        let Some(nonce_bytes) = user.nonce() else {
+        let Some(nonce) = user.nonce() else {
             return Err(VerifierError::UserNeverChallenged);
         };
 
         // Verify the signature over the nonce
         public_key
-            .verify(nonce_bytes, signature_bytes)
+            .verify(nonce, signature.as_ref())
             .map_err(|_| VerifierError::VerificationFailed)?;
 
         Ok(VerifierVerifyResponse::new(true))
@@ -104,27 +104,27 @@ pub enum VerifierError {
 // User
 
 struct User {
-    public_key: Vec<u8>,
-    nonce: Option<Vec<u8>>,
+    public_key: PublicKey,
+    nonce: Option<Nonce>,
 }
 
 impl User {
-    fn new(public_key: Vec<u8>) -> Self {
+    fn new(public_key: PublicKey) -> Self {
         Self {
             public_key,
             nonce: None,
         }
     }
 
-    fn public_key(&self) -> &[u8] {
-        self.public_key.as_ref()
+    fn public_key(&self) -> &PublicKey {
+        &self.public_key
     }
 
-    fn nonce(&self) -> Option<&[u8]> {
-        self.nonce.as_deref()
+    fn nonce(&self) -> Option<&Nonce> {
+        self.nonce.as_ref()
     }
 
-    fn set_nonce(&mut self, nonce_bytes: Vec<u8>) {
-        self.nonce = Some(nonce_bytes);
+    fn set_nonce(&mut self, nonce: Nonce) {
+        self.nonce = Some(nonce);
     }
 }

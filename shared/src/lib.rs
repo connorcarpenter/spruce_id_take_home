@@ -16,18 +16,18 @@ impl UserId {
 // HolderRegisterRequest
 
 pub struct HolderRegisterRequest {
-    public_key_bytes: Vec<u8>,
+    public_key: PublicKey,
 }
 
 impl HolderRegisterRequest {
-    pub fn new(public_key_bytes: Vec<u8>) -> Self {
+    pub fn new(public_key: PublicKey) -> Self {
         Self {
-            public_key_bytes,
+            public_key,
         }
     }
 
-    pub fn public_key_bytes(&self) -> &[u8] {
-        self.public_key_bytes.as_ref()
+    pub fn public_key(&self) -> &PublicKey {
+        &self.public_key
     }
 }
 
@@ -70,18 +70,18 @@ impl HolderChallengeRequest {
 // VerifierChallengeResponse
 
 pub struct VerifierChallengeResponse {
-    nonce_bytes: Vec<u8>,
+    nonce: Nonce,
 }
 
 impl VerifierChallengeResponse {
-    pub fn new(nonce_bytes: Vec<u8>) -> Self {
+    pub fn new(nonce: Nonce) -> Self {
         Self {
-            nonce_bytes,
+            nonce,
         }
     }
 
-    pub fn nonce_bytes(&self) -> &[u8] {
-        self.nonce_bytes.as_ref()
+    pub fn nonce(&self) -> &Nonce {
+        &self.nonce
     }
 }
 
@@ -89,14 +89,14 @@ impl VerifierChallengeResponse {
 
 pub struct HolderVerifyRequest {
     user_id: UserId,
-    signature_bytes: Vec<u8>,
+    signature: Signature,
 }
 
 impl HolderVerifyRequest {
-    pub fn new(user_id: UserId, signature_bytes: Vec<u8>) -> Self {
+    pub fn new(user_id: UserId, signature: Signature) -> Self {
         Self {
             user_id,
-            signature_bytes,
+            signature,
         }
     }
 
@@ -104,8 +104,8 @@ impl HolderVerifyRequest {
         self.user_id
     }
 
-    pub fn signature_bytes(&self) -> &[u8] {
-        self.signature_bytes.as_ref()
+    pub fn signature(&self) -> &Signature {
+        &self.signature
     }
 }
 
@@ -126,3 +126,9 @@ impl VerifierVerifyResponse {
         self.success
     }
 }
+
+// Types
+
+pub type Nonce = [u8; 32];
+pub type PublicKey = [u8; 32];
+pub type Signature = [u8; 64];
