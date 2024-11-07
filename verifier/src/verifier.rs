@@ -1,9 +1,15 @@
 use std::collections::HashMap;
 
 use log::info;
-use ring::{rand::{SecureRandom, SystemRandom}, signature::{UnparsedPublicKey, ED25519}, };
+use ring::{
+    rand::{SecureRandom, SystemRandom},
+    signature::{UnparsedPublicKey, ED25519},
+};
 
-use shared::{HolderChallengeRequest, VerifierVerifyResponse, HolderVerifyRequest, VerifierChallengeResponse, HolderRegisterRequest, VerifierRegisterResponse, UserId, ToBase64};
+use shared::{
+    HolderChallengeRequest, HolderRegisterRequest, HolderVerifyRequest, ToBase64, UserId,
+    VerifierChallengeResponse, VerifierRegisterResponse, VerifierVerifyResponse,
+};
 
 use crate::{error::VerifierError, user::User};
 
@@ -20,10 +26,15 @@ impl Verifier {
         }
     }
 
-    pub fn recv_register_request(&mut self, request: HolderRegisterRequest) -> Result<VerifierRegisterResponse, VerifierError> {
-
+    pub fn recv_register_request(
+        &mut self,
+        request: HolderRegisterRequest,
+    ) -> Result<VerifierRegisterResponse, VerifierError> {
         let public_key = request.public_key().clone();
-        info!("Verifier receives HolderRegisterRequest with Public Key: {:?}", public_key.to_base64());
+        info!(
+            "Verifier receives HolderRegisterRequest with Public Key: {:?}",
+            public_key.to_base64()
+        );
 
         info!("Verifier creates a new User for the Holder, assigns a randomly generated UUID as a \"UserId\", and stores the Holder's Public Key for later use");
 
@@ -31,21 +42,28 @@ impl Verifier {
         let new_user = User::new(public_key);
         self.users.insert(new_user_id, new_user);
 
-        info!("Verifier creates a VerifierRegisterResponse with the assigned {:?}", new_user_id);
+        info!(
+            "Verifier creates a VerifierRegisterResponse with the assigned {:?}",
+            new_user_id
+        );
 
         Ok(VerifierRegisterResponse::new(new_user_id))
     }
 
-    pub fn recv_challenge_request(&mut self, request: HolderChallengeRequest) -> Result<VerifierChallengeResponse, VerifierError> {
-
+    pub fn recv_challenge_request(
+        &mut self,
+        request: HolderChallengeRequest,
+    ) -> Result<VerifierChallengeResponse, VerifierError> {
         let user_id = request.user_id();
-        info!("Verifier receives HolderChallengeRequest with {:?}", user_id);
+        info!(
+            "Verifier receives HolderChallengeRequest with {:?}",
+            user_id
+        );
 
         // Check if the user is registered
         info!("Verifier checks if the UserId is registered");
 
         if let Some(user) = self.users.get_mut(&user_id) {
-
             // Generate a secure random nonce
             info!("Verifier generates a random nonce and stores it in the User");
 
@@ -65,12 +83,19 @@ impl Verifier {
         }
     }
 
-    pub fn recv_verify_request(&mut self, request: HolderVerifyRequest) -> Result<VerifierVerifyResponse, VerifierError> {
-
+    pub fn recv_verify_request(
+        &mut self,
+        request: HolderVerifyRequest,
+    ) -> Result<VerifierVerifyResponse, VerifierError> {
         let user_id = request.user_id();
         let nonce = request.nonce();
         let signature = request.signature();
-        info!("Verifier receives HolderVerifyRequest with {:?}, nonce: {:?}, and signature {:?}", user_id, nonce.to_base64(), signature.to_base64());
+        info!(
+            "Verifier receives HolderVerifyRequest with {:?}, nonce: {:?}, and signature {:?}",
+            user_id,
+            nonce.to_base64(),
+            signature.to_base64()
+        );
 
         // Retrieve the User associated with the UserId
         let user = self
@@ -80,8 +105,7 @@ impl Verifier {
 
         // Get the Public Key
         let public_key = user.public_key().clone();
-        let ed25519_public_key =
-            UnparsedPublicKey::new(&ED25519, public_key);
+        let ed25519_public_key = UnparsedPublicKey::new(&ED25519, public_key);
 
         // Take the User's Nonce, destroying it
         let Some(nonce) = user.take_nonce(&nonce) else {
@@ -101,7 +125,7 @@ impl Verifier {
             Ok(_) => {
                 info!("Verifier creates a VerifierVerifyResponse indicating verification success!");
                 return Ok(VerifierVerifyResponse::new(true));
-            },
+            }
             Err(_) => {
                 info!("Verifier creates a VerifierVerifyResponse indicating verification failure!");
                 return Ok(VerifierVerifyResponse::new(false));

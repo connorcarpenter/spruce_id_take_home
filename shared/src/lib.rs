@@ -22,9 +22,7 @@ pub struct HolderRegisterRequest {
 
 impl HolderRegisterRequest {
     pub fn new(public_key: PublicKey) -> Self {
-        Self {
-            public_key,
-        }
+        Self { public_key }
     }
 
     pub fn public_key(&self) -> &PublicKey {
@@ -40,9 +38,7 @@ pub struct VerifierRegisterResponse {
 
 impl VerifierRegisterResponse {
     pub fn new(user_id: UserId) -> Self {
-        Self {
-            user_id,
-        }
+        Self { user_id }
     }
 
     pub fn user_id(&self) -> UserId {
@@ -58,9 +54,7 @@ pub struct HolderChallengeRequest {
 
 impl HolderChallengeRequest {
     pub fn new(user_id: UserId) -> Self {
-        Self {
-            user_id,
-        }
+        Self { user_id }
     }
 
     pub fn user_id(&self) -> UserId {
@@ -76,9 +70,7 @@ pub struct VerifierChallengeResponse {
 
 impl VerifierChallengeResponse {
     pub fn new(nonce: Nonce) -> Self {
-        Self {
-            nonce,
-        }
+        Self { nonce }
     }
 
     pub fn nonce(&self) -> &Nonce {
@@ -124,9 +116,7 @@ pub struct VerifierVerifyResponse {
 
 impl VerifierVerifyResponse {
     pub fn new(success: bool) -> Self {
-        Self {
-            success,
-        }
+        Self { success }
     }
 
     pub fn is_success(&self) -> bool {

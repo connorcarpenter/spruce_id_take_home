@@ -1,12 +1,10 @@
-
 use anyhow::Result;
 use log::{info, warn};
 
-use verifier::Verifier;
 use holder::Holder;
+use verifier::Verifier;
 
 fn main() {
-
     env_logger::Builder::from_env(env_logger::Env::default().default_filter_or("info")).init();
 
     info!("");
@@ -23,7 +21,6 @@ fn main() {
     let test_result = run_successful_test(&mut holder, &mut verifier);
 
     if let Err(err) = test_result {
-
         let backtrace = err.backtrace();
 
         // Print error message
@@ -50,7 +47,6 @@ fn log_response(response_name: &str) {
 }
 
 fn run_successful_test(holder: &mut Holder, verifier: &mut Verifier) -> Result<()> {
-
     // Holder sends register request to Verifier
     let holder_register_request = holder.create_register_request();
     log_request("HolderRegisterRequest");
@@ -75,5 +71,7 @@ fn run_successful_test(holder: &mut Holder, verifier: &mut Verifier) -> Result<(
 
     // Holder receives verify response from Verifier
     log_response("HolderVerifyResponse");
-    return holder.recv_verify_response(verifier_verify_response).map_err(|e| e.into());
+    return holder
+        .recv_verify_response(verifier_verify_response)
+        .map_err(|e| e.into());
 }

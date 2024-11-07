@@ -1,5 +1,5 @@
-mod user;
 mod error;
+mod user;
 mod verifier;
 
 pub use error::VerifierError;

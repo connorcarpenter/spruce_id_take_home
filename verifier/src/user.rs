@@ -24,7 +24,6 @@ impl User {
     }
 
     pub(crate) fn add_nonce(&mut self, nonce: Nonce) {
-
         let now = Utc::now();
         self.cleanup_expired_nonces(&now);
 
@@ -41,9 +40,8 @@ impl User {
     }
 
     fn cleanup_expired_nonces(&mut self, now: &DateTime<Utc>) {
-        self.nonces.retain(|_, creation_time| {
-            !timestamp_expired(now, creation_time)
-        });
+        self.nonces
+            .retain(|_, creation_time| !timestamp_expired(now, creation_time));
     }
 }
 
